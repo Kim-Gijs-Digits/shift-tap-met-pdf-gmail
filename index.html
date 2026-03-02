@@ -1286,8 +1286,8 @@ const META_KEY  = `${APP_ID}_meta_${APP_CHANNEL}`;
 // Expose for extra modules (bv. pdf-export.js)
 window.SHIFTTAP_STORE_KEY = STORE_KEY;
 
-const NORM_MIN  = 7 * 60 + 30;
-const RECUP_MIN = 7 * 60 + 30;
+const NORM_MIN  = 0;
+const RECUP_MIN = 0;
 
 // =========================
 // Cloud sync (Google login) via Firebase
@@ -2856,7 +2856,7 @@ function hmFromMinutes(mins){
     openConfirm(msgRecupConfirm(), () => {
       state.entries.unshift({
         id: uid(), date: ymd(new Date()), type:"Recup",
-        start:null, end:null, pauseMin:0, netMin: RECUP_MIN, createdAt: Date.now()
+        start:null, end:null, pauseMin:0, netMin: (state.settings?.normDayMin ?? NORM_MIN), createdAt: Date.now()
       });
       saveState();
       showToast(`${t("recup")} ✓`, "ok");
