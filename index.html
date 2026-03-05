@@ -1408,148 +1408,151 @@ let calMonth = new Date().getMonth();
      ========================= */
   const LANG = {
 
-    nl: {
-      // --- Modal (handmatig) ---
-      history_title: "Historiek",
-      history_hint: "Vergeten uit te tikken?<br>Voeg handmatig toe.",
-      modal_add_title: "Handmatig toevoegen",
-      modal_edit_title: "Entry bewerken",
-      modal_hint: "Vergeet uit te tikken? Voeg gewoon de juiste tijden toe.",
-      btn_close: "Sluiten",
-      btn_save: "Opslaan",
-      btn_delete: "Verwijderen",
-      no_entries: "Geen ingevulde data gevonden.",
-
-      lbl_date: "Datum",
-      lbl_type: "Type",
-      lbl_start: "Start (HH:MM)",
-      lbl_end: "Einde (HH:MM)",
-      lbl_pause: "Pauze (min)",
-      lbl_note: "Opmerking (optioneel)",
-      ph_note: "bv. Garage na rit, file, wachten op klant...",
-
-      err_choose_date: "Kies een datum.",
-      err_fill_times: "Vul start en einde in (of kies Recup).",
-      confirm_delete_entry: "Deze entry verwijderen?",
-      backup_last: "Laatste backup",
-      backup_never: "nooit",
-      settings: "Opslaan",
-      tab_day: "Dag-Shift",
-      tab_history: "Historiek",
-      recup: "Recup",
-      start: "Start",
-      pause_stop: "Stop",
-      save: "Opslaan",
-      manual: "+ Handmatig",
-
-      // --- PDF export ---
-      pdf_export_btn: "📄 PDF",
-      pdf_export_btn_aria: "PDF export",
-      pdf_title: "PDF export",
-      pdf_month: "Maand",
-      pdf_dates: "Datums",
-      pdf_from: "Van",
-      pdf_to: "Tot",
-      make_pdf: "Maak PDF",
-      cancel: "Annuleren",
-      ok: "OK",
-
-      backup: "Backup",
-      import_json: "Import JSON",
-      backup_tip: "Tip: Maak regelmatig backup.",
-      language: "Taal",
-      start_saldo: "Start saldo overuren (u:min)",
-      default_pause: "Standaard pauze (min)",
-      norm_day: "Duur normale werkdag (u:min)",
-      cloud_title: "Google login + Cloud sync",
-      cloud_not_available: "Nog niet mogelijk.",
-      login_google: "Inloggen met Google",
-      logout_google: "Uitloggen",
-      cloud_download: "Herstel v Backup",
-      cloud_upload: "Backup Maken",
-      settle_hint: "Heb je overuren uitbetaald gekregen? Registreer ze hier zodat ze van je saldo worden afgetrokken.",
-
-      today_work: "Vandaag",
-      week_work: "Deze week",
-      overtime: "Saldo overuren",
-      minutes: "min",
-      hours: "u",
-      days: "dag",
-      calendar: "Kalender",
-      vac_taken: "Opgenomen vakantie",
-
-      status_busy: "Bezig...",
-      status_paused: "Gepauzeerd",
-      status_not_started: "Niet gestart",
-      cloud_logged_in: "Ingelogd:",
-cloud_not_logged: "Niet ingelogd.",
-cloud_login_error: "Google login fout",
-cloud_logged_in: "Ingelogd:",
-cloud_not_logged: "Niet ingelogd.",
-employee_name_label: "Naam werknemer",
-employee_name_ph: "Jouw naam",
-employer_name_label: "Naam werkgever",
-employer_name_ph: "Naam werkgever",
-
-      recup_line: "RECUP - gaat van overuren af",
-      net_line: "netto",
-      pause_line: "pauze",
-      work_label: "WERK",
-      sick: "Ziekte",
-vacation: "Vakantie",
-holiday: "Feestdag",
-note_label: "Opmerking",
-edit_btn: "✎ Bewerken",
-edit_aria: "Bewerken",
-work: "Werk",
-verrek_none: "Geen verrekening gevonden op die dag.",
-  verrek_deleted: "Verrekening verwijderd ✓",
+nl: {
+  // --- Modal (handmatig) ---
+  history_title: "Historiek",
+  history_hint: "Vergeten uit te tikken?<br>Voeg handmatig toe.",
+  modal_add_title: "Handmatig toevoegen",
+  modal_edit_title: "Entry bewerken",
+  modal_hint: "Vergeet uit te tikken? Voeg gewoon de juiste tijden toe.",
+  btn_close: "Sluiten",
+  btn_save: "Opslaan",
+  btn_delete: "Verwijderen",
   btn_add_manual: "Toevoegen",
-  settle: "Verrekenen",
+  no_entries: "Geen ingevulde data gevonden.",
+
+  lbl_date: "Datum",
+  lbl_type: "Type",
+  lbl_start: "Start (HH:MM)",
+  lbl_end: "Einde (HH:MM)",
+  lbl_pause: "Pauze (min)",
+  lbl_note: "Opmerking (optioneel)",
+  ph_note: "bv. Garage na rit, file, wachten op klant...",
+
+  // --- Errors ---
+  err_choose_date: "Kies een datum.",
+  err_fill_times: "Vul start en einde in (of kies Recup).",
+  err_start_saldo_format: "Start saldo moet in formaat u:min zijn, bv 60:00",
+  err_normday_format: "Norm dag moet in formaat u:min zijn, bv 07:30",
+  err_bad_json: "Ongeldig JSON bestand.",
+  err_timer_short: "Timer is te kort. Gebruik START of + Handmatig.",
+  confirm_delete_entry: "Deze entry verwijderen?",
+
+  // --- General / UI ---
+  tab_day: "Dag-Shift",
+  tab_history: "Historiek",
+  calendar: "Kalender",
+  language: "Taal",
+
+  start: "Start",
+  pause_stop: "Stop",
+  save: "Opslaan",
+  manual: "+ Handmatig",
+  cancel: "Annuleren",
+  ok: "OK",
+
+  status_busy: "Bezig...",
+  status_paused: "Gepauzeerd",
+  status_not_started: "Niet gestart",
+  status_online: "Status: online",
+  status_offline: "Status: offline",
+
+  today_work: "Vandaag",
+  week_work: "Deze week",
+  vac_taken: "Opgenomen vakantie",
+  overtime: "Saldo overuren",
   overtime_settled: "Overuren verrekend",
-hours_amount_hhmm: "Aantal uren (HH:MM)",
-day_no_entry: "Geen invoer op deze dag.",
-reconciled: "Verrekend",
-reconciled_remove: "Verrekening verwijderen",
+  minutes: "min",
+  hours: "u",
+  days: "dag",
 
-setup_title: "Welkom bij Shift-Tap 👋",
-setup_intro: "Werkuren en overuren zonder gedoe. Stel eerst even je basisinstellingen in.",
-setup_lang: "Taal",
-setup_normday: "Normale werkdag (uren)",
-setup_norm_hint: "Voorbeeld: 07:30 of 08:00",
-setup_pause: "Pauze (minuten)",
-setup_pause_hint: "Dit is uw standaard pauze, deze wordt automatisch afgetrokken.",
-setup_note: "Je kan deze instellingen later altijd aanpassen bij Instellingen.",
-setup_done: "Klaar voor gebruik",
+  // --- Types / labels ---
+  work: "Werk",
+  work_label: "WERK",
+  recup: "Recup",
+  recup_line: "RECUP - gaat van overuren af",
+  sick: "Ziekte",
+  vacation: "Vakantie",
+  holiday: "Feestdag",
+  net_line: "netto",
+  pause_line: "pauze",
 
+  // --- Detail ---
+  day_no_entry: "Geen invoer op deze dag.",
+  edit_btn: "✎ Bewerken",
+  edit_aria: "Bewerken",
+  note_label: "Opmerking",
 
+  // --- Verrekening ---
+  settle: "Verrekenen",
+  settle_hint: "Heb je overuren uitbetaald gekregen? Registreer ze hier zodat ze van je saldo worden afgetrokken.",
+  verrek_none: "Geen verrekening gevonden op die dag.",
+  verrek_deleted: "Verrekening verwijderd ✓",
+  reconciled: "Verrekend",
+  reconciled_remove: "Verrekening verwijderen",
+  hours_amount_hhmm: "Aantal uren (HH:MM)",
 
-      err_start_saldo_format: "Start saldo moet in formaat u:min zijn, bv 60:00",
-      err_normday_format: "Norm dag moet in formaat u:min zijn, bv 07:30",
-      settings_saved: "Instellingen opgeslagen",
-      status_online: "Status: online",
-      status_offline: "Status: offline",
-      err_bad_json: "Ongeldig JSON bestand.",
-      err_timer_short: "Timer is te kort. Gebruik START of + Handmatig.",
-      
-      calendar_info: "Hier krijg je een overzicht per dag. Je ziet wanneer je recup, ziekte, vakantie, feestdag had of gewerkt hebt.\nVerrekeningen worden weergegeven met een groen bolletje.\nTik op een dag om details te bekijken of iets toe te voegen.",
-      settle_info: "Gebruik deze knop wanneer overuren zijn uitbetaald. Het ingegeven aantal uren wordt van je overurensaldo afgetrokken.",
-      norm_day_info: "Dit is het aantal uren dat je normaal per werkdag moet presteren. Pauzes reken je hier niet mee. Alles daarboven telt als overuren.",
-      start_saldo_info: "Dit is het aantal overuren dat je al had vóór deze periode.",
-      default_break_info: "Deze pauze wordt automatisch afgetrokken van je gewerkte tijd wanneer je een dag opslaat. Dit geldt zowel voor de timer als voor handmatige invoer.",
-      recup_info: "Gebruik Recup wanneer je een volledige dag compenseert met opgebouwde overuren. Deze dag wordt van je overurensaldo afgetrokken.",
-     
-  setup_title:"Welkom bij Shift-Tap 👋",
-  setup_intro:"Werkuren, recup en overuren zonder gedoe. Stel eerst even je basisinstellingen in.",
-  setup_lang:"Taal",
-  setup_normday:"Normale werkdag (uren)",
-  setup_norm_hint:"Voorbeeld: 07:30 of 08:00",
-  setup_pause:"Pauze (minuten)",
-  setup_pause_hint:"Dit is uw standaard pauze, deze wordt automatisch afgetrokken.",
-  setup_note:"Je kan deze instellingen later altijd aanpassen bij Instellingen.",
-  setup_done:"Klaar voor gebruik"
-}
-    },
+  // --- Settings ---
+  settings: "Opslaan",
+  settings_saved: "Instellingen opgeslagen",
+  start_saldo: "Start saldo overuren (u:min)",
+  default_pause: "Standaard pauze (min)",
+  norm_day: "Duur normale werkdag (u:min)",
+
+  // --- Backup ---
+  backup: "Backup",
+  backup_last: "Laatste backup",
+  backup_never: "nooit",
+  backup_tip: "Tip: Maak regelmatig backup.",
+  import_json: "Import JSON",
+
+  // --- PDF export ---
+  pdf_export_btn: "📄 PDF",
+  pdf_export_btn_aria: "PDF export",
+  pdf_title: "PDF export",
+  pdf_month: "Maand",
+  pdf_dates: "Datums",
+  pdf_from: "Van",
+  pdf_to: "Tot",
+  make_pdf: "Maak PDF",
+
+  // --- Cloud ---
+  cloud_title: "Google login + Cloud sync",
+  cloud_not_available: "Nog niet mogelijk.",
+  login_google: "Inloggen met Google",
+  logout_google: "Uitloggen",
+  cloud_download: "Herstel v Backup",
+  cloud_upload: "Backup Maken",
+  cloud_logged_in: "Ingelogd:",
+  cloud_not_logged: "Niet ingelogd.",
+  cloud_login_error: "Google login fout",
+
+  // --- Employer/Employee ---
+  employee_name_label: "Naam werknemer",
+  employee_name_ph: "Jouw naam",
+  employer_name_label: "Naam werkgever",
+  employer_name_ph: "Naam werkgever",
+
+  // --- Setup modal ---
+  setup_title: "Welkom bij Shift-Tap 👋",
+  setup_intro: "Werkuren, recup en overuren zonder gedoe. Stel eerst even je basisinstellingen in.",
+  setup_lang: "Taal",
+  setup_normday: "Normale werkdag (uren)",
+  setup_norm_hint: "Voorbeeld: 07:30 of 08:00",
+  setup_pause: "Pauze (minuten)",
+  setup_pause_hint: "Dit is uw standaard pauze, deze wordt automatisch afgetrokken.",
+  setup_note: "Je kan deze instellingen later altijd aanpassen bij Instellingen.",
+  setup_done: "Klaar voor gebruik",
+
+  // --- Info bubbles ---
+  calendar_info: "Hier krijg je een overzicht per dag. Je ziet wanneer je recup, ziekte, vakantie, feestdag had of gewerkt hebt.\nVerrekeningen worden weergegeven met een groen bolletje.\nTik op een dag om details te bekijken of iets toe te voegen.",
+  settle_info: "Gebruik deze knop wanneer overuren zijn uitbetaald. Het ingegeven aantal uren wordt van je overurensaldo afgetrokken.",
+  norm_day_info: "Dit is het aantal uren dat je normaal per werkdag moet presteren. Pauzes reken je hier niet mee. Alles daarboven telt als overuren.",
+  start_saldo_info: "Dit is het aantal overuren dat je al had vóór deze periode.",
+  default_break_info: "Deze pauze wordt automatisch afgetrokken van je gewerkte tijd wanneer je een dag opslaat. Dit geldt zowel voor de timer als voor handmatige invoer.",
+  recup_info: "Gebruik Recup wanneer je een volledige dag compenseert met opgebouwde overuren. Deze dag wordt van je overurensaldo afgetrokken."
+},
+
 
 en: {
 
@@ -1578,7 +1581,7 @@ en: {
   modal_edit_title: "Edit entry",
   modal_hint: "Forgot to clock out? Just add the correct times.",
   history_hint: "Forgot to clock out?<br>Add it manually.",
-  
+
   lbl_date: "Date",
   lbl_type: "Type",
   lbl_start: "Start (HH:MM)",
@@ -1613,7 +1616,7 @@ en: {
   cloud_logged_in: "Logged in:",
   cloud_not_logged: "Not logged in.",
   cloud_login_error: "Google login error",
- 
+
   // ===== Backup =====
   backup: "Backup",
   backup_last: "Last backup",
@@ -1664,7 +1667,6 @@ en: {
   start_saldo: "Start overtime balance (h:mm)",
   default_pause: "Default break (min)",
   norm_day: "Normal workday duration (h:mm)",
-  
 
   // ===== Errors =====
   err_choose_date: "Choose a date.",
@@ -1679,38 +1681,28 @@ en: {
   edit_btn: "✎ Edit",
   edit_aria: "Edit",
   note_label: "Note",
-  
+
+  // ===== Setup modal =====
   setup_title: "Welcome to Shift-Tap 👋",
-setup_intro: "Work hours, recup and overtime without hassle. First set your basic settings.",
-setup_lang: "Language",
-setup_normday: "Normal workday",
-setup_norm_hint: "Example: 07:30 or 08:00",
-setup_pause: "Break (minutes)",
-setup_pause_hint: "This is your default break, it is deducted automatically.",
-setup_note: "You can always change these settings later in Settings.",
-setup_done: "Ready to use",
-  
+  setup_intro: "Work hours, recup and overtime without hassle. First set your basic settings.",
+  setup_lang: "Language",
+  setup_normday: "Normal workday (hours)",
+  setup_norm_hint: "Example: 07:30 or 08:00",
+  setup_pause: "Break (minutes)",
+  setup_pause_hint: "This is your default break and will be automatically deducted.",
+  setup_note: "You can always change these settings later in Settings.",
+  setup_done: "Ready to use",
+
+  // ===== Info bubbles =====
   calendar_info: "Here you get a daily overview. You can see when you had a comp day, sick leave, vacation, public holiday or worked.\nSettlements are indicated with a green dot.\nTap a day to view details or add an entry.",
   settle_info: "Use this button when overtime hours have been paid out. The entered number of hours will be deducted from your overtime balance.",
   norm_day_info: "This is the number of hours you are expected to work on a normal day. Breaks are not included. Anything above this counts as overtime.",
   start_saldo_info: "This is the overtime balance you already had before this period.",
   default_break_info: "This break is automatically deducted from your worked time when you save a day. This applies to both the timer and manual entries.",
-  recup_info: "Use Comp Day when you take a full day off using accumulated overtime. This day will be deducted from your overtime balance.",
-  
-  setup_title:"Welcome to Shift-Tap 👋",
-  setup_intro:"Work hours, recup and overtime without hassle. First configure your basic settings.",
-  setup_lang:"Language",
-  setup_normday:"Normal workday (hours)",
-  setup_norm_hint:"Example: 07:30 or 08:00",
-  setup_pause:"Break (minutes)",
-  setup_pause_hint:"This is your default break and will be automatically deducted.",
-  setup_note:"You can always change these settings later in Settings.",
-  setup_done:"Ready to use"
-}
-  
+  recup_info: "Use Comp Day when you take a full day off using accumulated overtime. This day will be deducted from your overtime balance."
 },
 
-    fr: {
+fr: {
 
   // ===== Navigation générale =====
   calendar: "Calendrier",
@@ -1823,7 +1815,6 @@ setup_done: "Ready to use",
   start_saldo: "Solde initial heures sup (h:mm)",
   default_pause: "Pause par défaut (min)",
   norm_day: "Durée normale de travail (h:mm)",
-  
 
   // ===== Erreurs =====
   err_choose_date: "Choisis une date.",
@@ -1838,33 +1829,25 @@ setup_done: "Ready to use",
   edit_btn: "✎ Modifier",
   edit_aria: "Modifier",
   note_label: "Remarque",
-  
+
+  // ===== Setup modal (ENKEL 1x) =====
   setup_title: "Bienvenue sur Shift-Tap 👋",
-setup_intro: "Heures, récup et heures supplémentaires sans tracas. Configure d'abord tes paramètres de base.",
-setup_lang: "Langue",
-setup_normday: "Journée de travail normale",
-setup_norm_hint: "Exemple : 07:30 ou 08:00",
-setup_pause: "Pause (minutes)",
-setup_pause_hint: "Ceci est votre pause standard, elle est déduite automatiquement.",
-setup_note: "Vous pouvez toujours modifier ces paramètres plus tard dans Paramètres.",
-setup_done: "Prêt à l'emploi",
-  
+  setup_intro: "Heures de travail, récup et heures supplémentaires sans tracas. Configure d'abord tes réglages de base.",
+  setup_lang: "Langue",
+  setup_normday: "Journée normale (heures)",
+  setup_norm_hint: "Exemple : 07:30 ou 08:00",
+  setup_pause: "Pause (minutes)",
+  setup_pause_hint: "Ceci est votre pause standard, elle sera automatiquement déduite.",
+  setup_note: "Vous pouvez toujours modifier ces paramètres plus tard dans les paramètres.",
+  setup_done: "Prêt à l’emploi",
+
+  // ===== Info bubbles =====
   calendar_info: "Ici tu as une vue par jour. Tu vois quand tu avais un jour de récup, maladie, vacances, jour férié ou travaillé.\nLes régularisations sont indiquées par un point vert.\nAppuie sur un jour pour voir les détails ou ajouter une entrée.",
   settle_info: "Utilise ce bouton lorsque des heures supplémentaires ont été payées. Le nombre d’heures saisi sera déduit de ton solde d’heures supplémentaires.",
   norm_day_info: "C'est le nombre d'heures que tu dois normalement prester par jour. Les pauses ne sont pas comprises. Tout ce qui dépasse compte comme heures supplémentaires.",
   start_saldo_info: "Il s'agit du solde d'heures supplémentaires que tu avais avant cette période.",
   default_break_info: "Cette pause est automatiquement déduite de ton temps de travail lorsque tu enregistres une journée. Cela s'applique aussi bien au timer qu'aux entrées manuelles.",
-  recup_info: "Utilise Jour de récup lorsque tu prends une journée complète en compensation d’heures supplémentaires. Cette journée sera déduite de ton solde d’heures supplémentaires.",
-  
-  setup_title:"Bienvenue sur Shift-Tap 👋",
-  setup_intro:"Heures de travail, récup et heures supplémentaires sans tracas. Configure d'abord tes réglages de base.",
-  setup_lang:"Langue",
-  setup_normday:"Journée normale (heures)",
-  setup_norm_hint:"Exemple : 07:30 ou 08:00",
-  setup_pause:"Pause (minutes)",
-  setup_pause_hint:"Ceci est votre pause standard, elle sera automatiquement déduite.",
-  setup_note:"Vous pouvez toujours modifier ces paramètres plus tard dans les paramètres.",
-  setup_done:"Prêt à l’emploi"
+  recup_info: "Utilise Jour de récup lorsque tu prends une journée complète en compensation d’heures supplémentaires. Cette journée sera déduite de ton solde d’heures supplémentaires."
 
 }
   };
