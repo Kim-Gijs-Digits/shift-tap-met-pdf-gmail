@@ -1494,7 +1494,7 @@ employer_name_ph: "Naam werkgever",
       recup_line: "RECUP - gaat van overuren af",
       net_line: "netto",
       pause_line: "pauze",
-      work_label: "Werk",
+      work_label: "WERK",
       sick: "Ziekte",
 vacation: "Vakantie",
 holiday: "Feestdag",
@@ -1537,7 +1537,18 @@ setup_done: "Klaar voor gebruik",
       norm_day_info: "Dit is het aantal uren dat je normaal per werkdag moet presteren. Pauzes reken je hier niet mee. Alles daarboven telt als overuren.",
       start_saldo_info: "Dit is het aantal overuren dat je al had vóór deze periode.",
       default_break_info: "Deze pauze wordt automatisch afgetrokken van je gewerkte tijd wanneer je een dag opslaat. Dit geldt zowel voor de timer als voor handmatige invoer.",
-      recup_info: "Gebruik Recup wanneer je een volledige dag compenseert met opgebouwde overuren. Deze dag wordt van je overurensaldo afgetrokken."
+      recup_info: "Gebruik Recup wanneer je een volledige dag compenseert met opgebouwde overuren. Deze dag wordt van je overurensaldo afgetrokken.",
+     
+  setup_title:"Welkom bij Shift-Tap 👋",
+  setup_intro:"Werkuren, recup en overuren zonder gedoe. Stel eerst even je basisinstellingen in.",
+  setup_lang:"Taal",
+  setup_normday:"Normale werkdag (uren)",
+  setup_norm_hint:"Voorbeeld: 07:30 of 08:00",
+  setup_pause:"Pauze (minuten)",
+  setup_pause_hint:"Dit is uw standaard pauze, deze wordt automatisch afgetrokken.",
+  setup_note:"Je kan deze instellingen later altijd aanpassen bij Instellingen.",
+  setup_done:"Klaar voor gebruik"
+}
     },
 
 en: {
@@ -1684,7 +1695,18 @@ setup_done: "Ready to use",
   norm_day_info: "This is the number of hours you are expected to work on a normal day. Breaks are not included. Anything above this counts as overtime.",
   start_saldo_info: "This is the overtime balance you already had before this period.",
   default_break_info: "This break is automatically deducted from your worked time when you save a day. This applies to both the timer and manual entries.",
-  recup_info: "Use Comp Day when you take a full day off using accumulated overtime. This day will be deducted from your overtime balance."
+  recup_info: "Use Comp Day when you take a full day off using accumulated overtime. This day will be deducted from your overtime balance.",
+  
+  setup_title:"Welcome to Shift-Tap 👋",
+  setup_intro:"Work hours, recup and overtime without hassle. First configure your basic settings.",
+  setup_lang:"Language",
+  setup_normday:"Normal workday (hours)",
+  setup_norm_hint:"Example: 07:30 or 08:00",
+  setup_pause:"Break (minutes)",
+  setup_pause_hint:"This is your default break and will be automatically deducted.",
+  setup_note:"You can always change these settings later in Settings.",
+  setup_done:"Ready to use"
+}
   
 },
 
@@ -1832,7 +1854,18 @@ setup_done: "Prêt à l'emploi",
   norm_day_info: "C'est le nombre d'heures que tu dois normalement prester par jour. Les pauses ne sont pas comprises. Tout ce qui dépasse compte comme heures supplémentaires.",
   start_saldo_info: "Il s'agit du solde d'heures supplémentaires que tu avais avant cette période.",
   default_break_info: "Cette pause est automatiquement déduite de ton temps de travail lorsque tu enregistres une journée. Cela s'applique aussi bien au timer qu'aux entrées manuelles.",
-  recup_info: "Utilise Jour de récup lorsque tu prends une journée complète en compensation d’heures supplémentaires. Cette journée sera déduite de ton solde d’heures supplémentaires."
+  recup_info: "Utilise Jour de récup lorsque tu prends une journée complète en compensation d’heures supplémentaires. Cette journée sera déduite de ton solde d’heures supplémentaires.",
+  
+  setup_title:"Bienvenue sur Shift-Tap 👋",
+  setup_intro:"Heures de travail, récup et heures supplémentaires sans tracas. Configure d'abord tes réglages de base.",
+  setup_lang:"Langue",
+  setup_normday:"Journée normale (heures)",
+  setup_norm_hint:"Exemple : 07:30 ou 08:00",
+  setup_pause:"Pause (minutes)",
+  setup_pause_hint:"Ceci est votre pause standard, elle sera automatiquement déduite.",
+  setup_note:"Vous pouvez toujours modifier ces paramètres plus tard dans les paramètres.",
+  setup_done:"Prêt à l’emploi"
+
 }
   };
 
@@ -3685,6 +3718,7 @@ async function init(){
     const overlay = document.getElementById("setupOverlay");
     if(overlay){
       overlay.style.display = "flex";
+      applyLang(); 
     }
     return;
   }
@@ -3860,15 +3894,17 @@ init();
   <div class="appModal" role="dialog" aria-modal="true">
     
     <div class="appModalBody">
+
       <h2 data-i18n="setup_title">Welkom bij Shift-Tap 👋</h2>
 
       <p data-i18n="setup_intro">
-        Werkuren, recup en overuren zonder gedoe.
-        <br> Stel eerst even je basisinstellingen in.
+        Werkuren, recup en overuren zonder gedoe.<br>
+        Stel eerst even je basisinstellingen in.
       </p>
 
       <div class="setupLangRow">
         <label for="setupLang" class="setupLangLabel" data-i18n="setup_lang">Taal</label>
+
         <select id="setupLang" class="setupLangSelect">
           <option value="nl">Nederlands</option>
           <option value="fr">Français</option>
@@ -3878,11 +3914,13 @@ init();
 
       <hr style="margin:15px 0; opacity:.2;">
 
-      <!-- grid -->
+      <!-- instellingen -->
       <div class="setupGrid">
 
         <div class="setupField">
-          <label for="setupNormHours" data-i18n="setup_normday">Normale werkdag (uren)</label>
+          <label for="setupNormHours" data-i18n="setup_normday">
+            Normale werkdag (uren)
+          </label>
 
           <input
             type="time"
@@ -3895,9 +3933,10 @@ init();
           </div>
         </div>
 
-
         <div class="setupField">
-          <label for="setupPauseMin" data-i18n="setup_pause">Pauze (minuten)</label>
+          <label for="setupPauseMin" data-i18n="setup_pause">
+            Pauze (minuten)
+          </label>
 
           <input
             type="number"
@@ -3921,14 +3960,17 @@ init();
     </div>
 
     <div class="appModalActions">
-      <button type="button" class="btnGreen" id="btnSetupStart" data-i18n="setup_done">
+      <button
+        type="button"
+        class="btnGreen"
+        id="btnSetupStart"
+        data-i18n="setup_done">
         Klaar voor gebruik
       </button>
     </div>
 
   </div>
 </div>
-<!-- ===== SETUP MODAL END ===== -->
+<!-- ===== SETUP MODAL END ===== --
 </body>
-
 </html>
