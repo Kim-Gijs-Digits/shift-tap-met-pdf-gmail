@@ -3782,7 +3782,7 @@ if (setupBtn) {
     state.settings.pauseMinutes = pauseMin;
     
       // TAAL OPSLAAN
-  const lang = document.getElementById("setupLang")?.value || "nl";
+  const lang = currentLang || "nl";
   state.settings.lang = lang;
   localStorage.setItem("lang", lang);
   currentLang = lang;
