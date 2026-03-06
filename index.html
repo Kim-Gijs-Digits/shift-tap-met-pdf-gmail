@@ -3528,28 +3528,57 @@ function hmFromMinutes(mins){
   const hh = Math.floor(mins / 60);
   const mm = mins % 60;
 
+  
   const nl = `${hh}u${mm.toString().padStart(2,"0")}`;
-  const fr = `${hh}h${mm.toString().padStart(2,"0")}`;
-  const en = `${hh}:${mm.toString().padStart(2,"0")}`;
+const fr = `${hh}h${mm.toString().padStart(2,"0")}`;
+const en = `${hh}:${mm.toString().padStart(2,"0")}`;
+const de = `${hh}Std ${mm.toString().padStart(2,"0")}`;
+const pl = `${hh}g${mm.toString().padStart(2,"0")}`;
+const es = `${hh}h ${mm.toString().padStart(2,"0")}`;
+const hu = `${hh}ó${mm.toString().padStart(2,"0")}`;
 
   const hasNorm = mins > 0;
 
-  if(currentLang === "fr"){
-    return hasNorm
-      ? `Ajouter un jour de récup pour ${dmy(new Date())} ?\nCela déduit ${fr} de vos heures sup.`
-      : `Ajouter un jour de récup pour ${dmy(new Date())} ?`;
-  }
-
-  if(currentLang === "en"){
-    return hasNorm
-      ? `Add comp day for ${dmy(new Date())}?\nThis subtracts ${en} from your overtime.`
-      : `Add comp day for ${dmy(new Date())}?`;
-  }
-
+if(currentLang === "fr"){
   return hasNorm
-    ? `Recup toevoegen voor ${dmy(new Date())}?\nDit trekt ${nl} af van je overuren.`
-    : `Recup toevoegen voor ${dmy(new Date())}?`;
+    ? `Ajouter un jour de récup pour ${dmy(new Date())} ?\nCela déduit ${fr} de vos heures sup.`
+    : `Ajouter un jour de récup pour ${dmy(new Date())} ?`;
 }
+
+if(currentLang === "en"){
+  return hasNorm
+    ? `Add comp day for ${dmy(new Date())}?\nThis subtracts ${en} from your overtime.`
+    : `Add comp day for ${dmy(new Date())}?`;
+}
+
+if(currentLang === "de"){
+  return hasNorm
+    ? `Recup-Tag hinzufügen für ${dmy(new Date())}?\nDies zieht ${de} von deinen Überstunden ab.`
+    : `Recup-Tag hinzufügen für ${dmy(new Date())}?`;
+}
+
+if(currentLang === "pl"){
+  return hasNorm
+    ? `Dodać odbiór za ${dmy(new Date())}?\nTo odejmie ${pl} z twoich nadgodzin.`
+    : `Dodać odbiór za ${dmy(new Date())}?`;
+}
+
+if(currentLang === "es"){
+  return hasNorm
+    ? `¿Agregar día de recup para ${dmy(new Date())}?\nEsto restará ${es} de tus horas extra.`
+    : `¿Agregar día de recup para ${dmy(new Date())}?`;
+}
+
+if(currentLang === "hu"){
+  return hasNorm
+    ? `Hozzáadod a szabadnapot erre a napra: ${dmy(new Date())}?\nEz levon ${hu}-t a túlóráidból.`
+    : `Hozzáadod a szabadnapot erre a napra: ${dmy(new Date())}?`;
+}
+
+return hasNorm
+  ? `Recup toevoegen voor ${dmy(new Date())}?\nDit trekt ${nl} af van je overuren.`
+  : `Recup toevoegen voor ${dmy(new Date())}?`;
+   }
 
   function addRecup(){
     openConfirm(msgRecupConfirm(), () => {
@@ -4138,9 +4167,22 @@ function saveSettings(){
   }
 
   function formatTodayPill(){
-    const loc = currentLang==="fr" ? "fr-FR" : currentLang==="en" ? "en-GB" : "nl-BE";
-    return new Date().toLocaleDateString(loc, { weekday:"short", day:"2-digit", month:"2-digit", year:"numeric" });
-  }
+  const loc =
+    currentLang==="fr" ? "fr-FR" :
+    currentLang==="en" ? "en-GB" :
+    currentLang==="de" ? "de-DE" :
+    currentLang==="pl" ? "pl-PL" :
+    currentLang==="es" ? "es-ES" :
+    currentLang==="hu" ? "hu-HU" :
+    "nl-BE";
+
+  return new Date().toLocaleDateString(loc, {
+    weekday:"short",
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+  });
+}
 
   function renderTotals(){
     const today = ymd(new Date());
