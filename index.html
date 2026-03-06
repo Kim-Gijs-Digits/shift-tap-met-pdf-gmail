@@ -3696,16 +3696,14 @@ window.addEventListener("offline", renderOnlineBadge);
 
 async function init(){
 
-  // Stop normale init als setup nog niet gedaan is
-  if(!isSetupDone()){
-    const overlay = document.getElementById("setupOverlay");
-    if(overlay){
-      overlay.style.display = "flex";
-      applyLang(); 
-    }
-    return;
+// Stop normale init als setup nog niet gedaan is
+if(!isSetupDone()){
+  const langOverlay = document.getElementById("langOverlay");
+  if(langOverlay){
+    langOverlay.style.display = "flex";
   }
-
+  return;
+}
   // Taal instellen (mag pas na setup)
   const savedLang = localStorage.getItem("lang");
   currentLang = savedLang || state?.settings?.lang || "nl";
@@ -3798,6 +3796,31 @@ if (setupBtn) {
     location.reload();
   });
 }
+// ===== LANGUAGE MODAL =====
+const langOverlay = document.getElementById("langOverlay");
+const setupOverlay = document.getElementById("setupOverlay");
+
+function openSetupAfterLang(lang){
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
+
+  if(state && state.settings){
+    state.settings.lang = lang;
+  }
+
+  applyLang();
+
+  const setupSelect = document.getElementById("setupLang");
+  if(setupSelect) setupSelect.value = lang;
+
+  if(langOverlay) langOverlay.style.display = "none";
+  if(setupOverlay) setupOverlay.style.display = "flex";
+}
+
+document.getElementById("btnLangNl")?.addEventListener("click", () => openSetupAfterLang("nl"));
+document.getElementById("btnLangEn")?.addEventListener("click", () => openSetupAfterLang("en"));
+document.getElementById("btnLangFr")?.addEventListener("click", () => openSetupAfterLang("fr"));
+
 
 init();
 });
@@ -3871,6 +3894,24 @@ init();
 <button id="btnTestSetup" style="display:none; position:fixed; bottom:10px; right:10px; z-index:9999;">
   TEST Setup Done
 </button>
+
+<!-- ===== LANGUAGE MODAL START ===== -->
+<div class="appModalOverlay" id="langOverlay" style="display:none;" aria-hidden="true">
+  <div class="appModal" role="dialog" aria-modal="true">
+    <div class="appModalBody" style="text-align:center;">
+      <div style="font-size:32px; margin-bottom:10px;">🌍</div>
+      <h2 style="margin:0 0 14px 0;">Choose language</h2>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button type="button" class="btnGhost" id="btnLangNl">Nederlands</button>
+        <button type="button" class="btnGhost" id="btnLangEn">English</button>
+        <button type="button" class="btnGhost" id="btnLangFr">Français</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===== LANGUAGE MODAL END ===== -->
+
 
 <!-- ===== SETUP MODAL START ===== -->
 <div class="appModalOverlay" id="setupOverlay" style="display:none;" aria-hidden="true">
