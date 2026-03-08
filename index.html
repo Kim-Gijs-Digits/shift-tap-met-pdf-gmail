@@ -3462,7 +3462,14 @@ function updateLegendLetters(){
 
   return (e.type || "").toUpperCase();
 }
-
+function getIsoWeekNumber(dateObj){
+  const d = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+  
 function renderCalendar(){
   if(!elCalGrid || !elCalLabel) return;
 
@@ -3491,7 +3498,8 @@ function renderCalendar(){
   }
 
   for(let day=1; day<=daysInMonth; day++){
-    const dateStr = ymd(new Date(calYear, calMonth, day));
+    const dateObj = new Date(calYear, calMonth, day);
+    const dateStr = ymd(dateObj);
     const e = entryForDate(dateStr);
 
     const cell = document.createElement("div");
@@ -3520,15 +3528,20 @@ function renderCalendar(){
   ? `<span class="calDotVerrek" title="${t("reconciled")}: ${formatHM(vMins)}"></span>`
   : "";
 
-    cell.innerHTML = `
-      ${pill}
-      <div class="calNum">${day}</div>
-      ${hours}
-      ${dot}
-    `;
+const weekNr = (dateObj.getDay() === 1)
+  ? `<div style="position:absolute; left:4px; bottom:4px; font-size:10px; opacity:.6; font-weight:900;">${getIsoWeekNumber(dateObj)}</div>`
+  : "";
 
-    cell.addEventListener("click", () => openDayDetail(dateStr));
-    elCalGrid.appendChild(cell);
+cell.innerHTML = `
+  ${pill}
+  <div class="calNum">${day}</div>
+  ${hours}
+  ${dot}
+  ${weekNr}
+`;
+
+cell.addEventListener("click", () => openDayDetail(dateStr));
+elCalGrid.appendChild(cell);
   }
 }
 
