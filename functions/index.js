@@ -96,9 +96,9 @@ exports.helloWorld = onRequest((request, response) => {
 });
 
 exports.shiftTapMorningCheck = onSchedule(
-  { schedule: "0 8 * * *", timeZone: "Europe/Brussels" },
+  { schedule: "30 7 * * *", timeZone: "Europe/Brussels" },
   async () => {
-    console.log("Shift-Tap 08:00 check gestart");
+    console.log("Shift-Tap 07:30 check gestart");
 
     const usersSnap = await db.collection("users").get();
     for (const doc of usersSnap.docs) {
