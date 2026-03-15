@@ -5664,22 +5664,24 @@ if (window.ShiftTapNotifications) {
 
   const chkNotif = document.getElementById("chkNotifEnabled");
 
-  if (chkNotif) {
-    chkNotif.checked = ShiftTapNotifications.getSettings().enabled;
+if (chkNotif) {
+  chkNotif.checked = ShiftTapNotifications.getSettings().enabled;
 
-    chkNotif.addEventListener("change", () => {
-      const next = ShiftTapNotifications.getSettings();
-      next.enabled = chkNotif.checked;
+  chkNotif.addEventListener("change", () => {
+    const next = ShiftTapNotifications.getSettings();
+    next.enabled = chkNotif.checked;
 
-      ShiftTapNotifications.setSettings(next);
-      saveNotifSettings(next);
+    ShiftTapNotifications.setSettings(next);
+    saveNotifSettings(next);
 
-      console.log("Notificaties staan nu:", chkNotif.checked);
+    console.log("Notificaties staan nu:", chkNotif.checked);
+
+    if (chkNotif.checked && window.ShiftTapNotifications?.init) {
+      window.ShiftTapNotifications.init();
+      }
     });
   }
 }
-
-});
 })();
 </script>
 
@@ -5889,13 +5891,7 @@ if (window.ShiftTapNotifications) {
 </div>
 <!-- ===== SETUP MODAL END ===== -->
  <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then(reg => console.log('Service Worker geregistreerd', reg))
-      .catch(err => console.log('Service Worker fout', err));
-  });
-}
+
 </script>
 </body>
 </html>
