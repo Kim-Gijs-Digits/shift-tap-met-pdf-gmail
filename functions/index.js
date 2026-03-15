@@ -52,26 +52,89 @@ const TEXTS = {
   }
 };
 
+const TIME_ZONE = "Europe/Brussels";
+
 function pickLang(userData) {
   const lang = (userData?.settings?.language || userData?.language || "en").toLowerCase();
   return TEXTS.title[lang] ? lang : "en";
 }
 
-async function sendPushToUser(userId, kind) {
-  const userRef = db.collection("users").doc(userId);
-  const userSnap = await userRef.get();
+function getTodayStringInBrussels() {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  });
 
-  if (!userSnap.exists) return;
+  return formatter.format(new Date());
+}
 
-  const userData = userSnap.data() || {};
+function canReceiveNotifications(userData) {
+  const token = userData?.messaging?.token;
+  const notifEnabled = userData?.notificationSettings?.enabled;
+  return Boolean(token && notifEnabled === true);
+}
+
+async function getTodayWorkLog(userId, todayKey) {
+  const logRef = db.collection("users").doc(userId).collection("workLogs").doc(todayKey);
+  const logSnap = await logRef.get();
+
+  if (!logSnap.exists) {
+    return {
+      exists: false,
+      startTime: null,
+      stopTime: null,
+      hasLogs: false
+    };
+  }
+
+  const data = logSnap.data() || {};
+
+  return {
+    exists: true,
+    startTime: data.startTime || null,
+    stopTime: data.stopTime || null,
+    hasLogs: Boolean(data.startTime || data.stopTime)
+  };
+}
+
+function shouldSendNotification(kind, dayStatus) {
+  switch (kind) {
+    case "startCheck":
+      return !dayStatus.startTime;
+
+    case "forgotCheckout":
+      return Boolean(dayStatus.startTime) && !dayStatus.stopTime;
+
+    case "noLogs":
+      return !dayStatus.exists || !dayStatus.hasLogs;
+
+    default:
+      return false;
+  }
+}
+
+async function sendPushToUser(userId, kind, userDataArg = null) {
+  let userData = userDataArg;
+
+  if (!userData) {
+    const userRef = db.collection("users").doc(userId);
+    const userSnap = await userRef.get();
+    if (!userSnap.exists) return false;
+    userData = userSnap.data() || {};
+  }
+
   const token = userData?.messaging?.token;
   const notifEnabled = userData?.notificationSettings?.enabled;
 
-  if (!token || notifEnabled !== true) return;
+  if (!token || notifEnabled !== true) return false;
 
   const lang = pickLang(userData);
   const title = TEXTS.title[lang];
-  const body = TEXTS[kind][lang];
+  const body = TEXTS[kind]?.[lang];
+
+  if (!body) return false;
 
   await admin.messaging().send({
     token,
@@ -89,6 +152,53 @@ async function sendPushToUser(userId, kind) {
   });
 
   console.log(`Push gestuurd naar user ${userId}: ${kind} (${lang})`);
+  return true;
+}
+
+async function runScheduledCheck(kind) {
+  const todayKey = getTodayStringInBrussels();
+
+  console.log(`Shift-Tap scheduled check gestart: ${kind} voor ${todayKey}`);
+
+  const usersSnap = await db.collection("users").get();
+
+  const results = await Promise.all(
+    usersSnap.docs.map(async (doc) => {
+      const userId = doc.id;
+      const userData = doc.data() || {};
+
+      if (!canReceiveNotifications(userData)) {
+        return { checked: 1, eligible: 0, sent: 0 };
+      }
+
+      try {
+        const dayStatus = await getTodayWorkLog(userId, todayKey);
+
+        if (!shouldSendNotification(kind, dayStatus)) {
+          return { checked: 1, eligible: 0, sent: 0 };
+        }
+
+        const sent = await sendPushToUser(userId, kind, userData);
+
+        return {
+          checked: 1,
+          eligible: 1,
+          sent: sent ? 1 : 0
+        };
+      } catch (error) {
+        console.error(`Fout bij verwerken user ${userId} voor ${kind}:`, error);
+        return { checked: 1, eligible: 0, sent: 0 };
+      }
+    })
+  );
+
+  const checked = results.reduce((sum, r) => sum + r.checked, 0);
+  const eligible = results.reduce((sum, r) => sum + r.eligible, 0);
+  const sent = results.reduce((sum, r) => sum + r.sent, 0);
+
+  console.log(
+    `Shift-Tap scheduled check klaar: ${kind} | checked=${checked} eligible=${eligible} sent=${sent}`
+  );
 }
 
 exports.helloWorld = onRequest((request, response) => {
@@ -99,11 +209,7 @@ exports.shiftTapMorningCheck = onSchedule(
   { schedule: "30 7 * * *", timeZone: "Europe/Brussels" },
   async () => {
     console.log("Shift-Tap 07:30 check gestart");
-
-    const usersSnap = await db.collection("users").get();
-    for (const doc of usersSnap.docs) {
-      await sendPushToUser(doc.id, "startCheck");
-    }
+    await runScheduledCheck("startCheck");
   }
 );
 
@@ -111,11 +217,7 @@ exports.shiftTapAfternoonCheck = onSchedule(
   { schedule: "30 16 * * *", timeZone: "Europe/Brussels" },
   async () => {
     console.log("Shift-Tap 16:30 check gestart");
-
-    const usersSnap = await db.collection("users").get();
-    for (const doc of usersSnap.docs) {
-      await sendPushToUser(doc.id, "forgotCheckout");
-    }
+    await runScheduledCheck("forgotCheckout");
   }
 );
 
@@ -123,14 +225,9 @@ exports.shiftTapEveningCheck = onSchedule(
   { schedule: "0 19 * * *", timeZone: "Europe/Brussels" },
   async () => {
     console.log("Shift-Tap 19:00 check gestart");
-
-    const usersSnap = await db.collection("users").get();
-    for (const doc of usersSnap.docs) {
-      await sendPushToUser(doc.id, "noLogs");
-    }
+    await runScheduledCheck("noLogs");
   }
 );
-
 
 exports.shiftTapSendTestPush = onRequest(async (request, response) => {
   try {
