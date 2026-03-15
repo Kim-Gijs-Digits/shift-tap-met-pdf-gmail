@@ -4439,35 +4439,66 @@ function hmFromMinutes(mins){
   /* =========================
      Actions
      ========================= */
-  function saveWorkEntry(){
-    const ms = currentElapsedMs();
-    if(ms < 1000){
-      showToast(t("err_timer_short"), "warn");
-      return;
-    }
-
-    const pause = clamp(parseInt(elPauseMin?.value||"0",10)||0, 0, 600);
-    const now = new Date();
-    const date = ymd(now);
-
-    const durMin = Math.max(0, Math.round(ms/60000));
-    const netMin = Math.max(0, durMin - pause);
-
-    const endMin = now.getHours()*60 + now.getMinutes();
-    const startDate = new Date(now.getTime() - ms);
-    const startMin = startDate.getHours()*60 + startDate.getMinutes();
-
-    state.entries.unshift({
-      id: uid(), date, type:"Werk",
-      start: minToTime(startMin), end: minToTime(endMin),
-      pauseMin: pause, netMin, createdAt: Date.now()
-    });
-
-    saveState();
-    resetTimer();
-    showToast(`${t("save")} ✓`, "ok");
-    renderAll();
+  async function saveWorkEntry(){
+  const ms = currentElapsedMs();
+  if(ms < 1000){
+    showToast(t("err_timer_short"), "warn");
+    return;
   }
+
+  const pause = clamp(parseInt(elPauseMin?.value || "0", 10) || 0, 0, 600);
+  const now = new Date();
+  const date = ymd(now);
+
+  const durMin = Math.max(0, Math.round(ms / 60000));
+  const netMin = Math.max(0, durMin - pause);
+
+  const endMin = now.getHours() * 60 + now.getMinutes();
+  const startDate = new Date(now.getTime() - ms);
+  const startMin = startDate.getHours() * 60 + startDate.getMinutes();
+
+  const entry = {
+    id: uid(),
+    date,
+    type: "Werk",
+    start: minToTime(startMin),
+    end: minToTime(endMin),
+    pauseMin: pause,
+    netMin,
+    createdAt: Date.now()
+  };
+
+  state.entries.unshift(entry);
+  saveState();
+
+  try {
+    if (await ensureFirebase()) {
+      const u = currentUser?.();
+      if (u && fbDb) {
+        await fbDb
+          .collection("users")
+          .doc(u.uid)
+          .collection("workLogs")
+          .doc(date)
+          .set({
+            date,
+            startTime: entry.start,
+            stopTime: entry.end,
+            pauseMin: pause,
+            netMin,
+            type: "Werk",
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+      }
+    }
+  } catch (err) {
+    console.error("Firestore workLogs save failed:", err);
+  }
+
+  resetTimer();
+  showToast(`${t("save")} ✓`, "ok");
+  renderAll();
+}
 
   function msgRecupConfirm(){
   const mins = (state.settings?.normDayMin ?? NORM_MIN);
@@ -5427,7 +5458,12 @@ elOvertimeSaldo.innerHTML = `
 // Basis knoppen
 btnStart?.addEventListener("click", startTimer);
 btnPause?.addEventListener("click", pauseTimer);
-btnSave?.addEventListener("click", saveWorkEntry);
+btnSave?.addEventListener("click", () => {
+  saveWorkEntry().catch(err => {
+    console.error("saveWorkEntry failed:", err);
+    showToast("Save failed", "warn");
+  });
+});
 btnRecup?.addEventListener("click", addRecup);
 btnAddManual?.addEventListener("click", ()=> openModal("add"));
 
